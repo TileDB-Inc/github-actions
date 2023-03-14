@@ -1,0 +1,40 @@
+name: Upload notebooks to TileDB Cloud
+description: Upload notebooks to TileDB Cloud
+inputs:
+  notebooks:
+    description: The path to the notebooks to upload. Must have extension ".ipynb"
+    required: true
+  TILEDB_CLOUD_TOKEN:
+    description: API token for TileDB Cloud account
+    required: true
+  TILEDB_CLOUD_NAMESPACE:
+    description: Namespace for TileDB Cloud
+    required: true
+  TILEDB_CLOUD_STORAGE_PATH:
+   description: Storage path on TileDB Cloud
+   required: false
+  TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME:
+   description: Storage credentials to use on TileDB Cloud
+   required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Install tiledb-cloud package in virtual env
+      run: |
+        python -m venv "$RUNNER_TEMP/pyenv"
+        "$RUNNER_TEMP/pyenv/bin/pip" install tiledb-cloud
+        "$RUNNER_TEMP/pyenv/bin/pip" list
+      shell: bash
+    - name: Upload notebooks
+      env:
+        TILEDB_CLOUD_TOKEN: ${{ inputs.TILEDB_CLOUD_TOKEN }}
+        TILEDB_CLOUD_NAMESPACE: ${{ inputs.TILEDB_CLOUD_NAMESPACE }}
+        TILEDB_CLOUD_STORAGE_PATH:  ${{ inputs.TILEDB_CLOUD_STORAGE_PATH }}
+        TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME:  ${{ inputs.TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME }}
+      run: |
+        for notebook in ${{ inputs.notebooks }}
+        do
+          echo "Uploading $notebook"
+          "$RUNNER_TEMP/pyenv/bin/python" "${{ github.action_path }}/upload-notebook.py" "$notebook"
+        done
+      shell: bash
