@@ -1,8 +1,9 @@
 # Upload notebooks to TileDB Cloud
 
 Insert this action into your GitHub Actions workflow to upload your notebooks to
-your TileDB Cloud account. Generate a TileDB Cloud API token and save it as a
-GitHub repository secret, eg `TILEDB_CLOUD_TOKEN`
+your TileDB Cloud account. Generate a TileDB Cloud API token (scope:
+`array:admin`) and save it as a GitHub repository secret, eg
+`TILEDB_CLOUD_TOKEN`
 
 Minimal example:
 

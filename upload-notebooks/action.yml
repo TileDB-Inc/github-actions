@@ -7,7 +7,7 @@ inputs:
       Separate multiple paths with whitespace. The path(s) cannot include spaces
     required: true
   TILEDB_CLOUD_TOKEN:
-    description: API token for TileDB Cloud account
+    description: API token for TileDB Cloud account (scope: `array:admin`)
     required: true
   TILEDB_CLOUD_NAMESPACE:
     description: Namespace for TileDB Cloud
