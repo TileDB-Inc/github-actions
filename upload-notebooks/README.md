@@ -9,7 +9,7 @@ Minimal example:
 ```yaml
     - uses: TileDB-Inc/github-actions/upload-notebooks@main
       with:
-        notebooks: "notebook-1.ipynb notebook-2.ipynb notebook-3.ipynb"
+        notebooks: notebook-1.ipynb notebook-2.ipynb notebook-3.ipynb
         TILEDB_CLOUD_TOKEN: ${{ secrets.TILEDB_CLOUD_TOKEN }}
         TILEDB_CLOUD_NAMESPACE: <namespace>
 ```
@@ -20,7 +20,7 @@ Full example
     - name: Upload notebooks
       uses: TileDB-Inc/github-actions/upload-notebooks@main
       with:
-        notebooks: "notebook-1.ipynb notebook-2.ipynb notebook-3.ipynb"
+        notebooks: notebook-1.ipynb notebook-2.ipynb notebook-3.ipynb
         TILEDB_CLOUD_TOKEN: ${{ secrets.TILEDB_CLOUD_TOKEN }}
         TILEDB_CLOUD_NAMESPACE: <namespace>
         TILEDB_CLOUD_STORAGE_PATH: s3://<your-s3-bucket>

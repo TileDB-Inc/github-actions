@@ -2,7 +2,9 @@ name: Upload notebooks to TileDB Cloud
 description: Upload notebooks to TileDB Cloud
 inputs:
   notebooks:
-    description: The path to the notebooks to upload. Must have extension ".ipynb"
+    description: >-
+      The path(s) to the notebook(s) to upload. Must have extension ".ipynb".
+      Separate multiple paths with whitespace. The path(s) cannot include spaces
     required: true
   TILEDB_CLOUD_TOKEN:
     description: API token for TileDB Cloud account
