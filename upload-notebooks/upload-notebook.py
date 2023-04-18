@@ -89,8 +89,6 @@ if namespace is None:
 
 # Login and upload
 tiledb.cloud.login(token=token)
-user = tiledb.cloud.user_profile()
-sys.stderr.write("Info: Logged into TileDB Cloud as %s\n" % (user.username))
 sys.stderr.write("Info: Notebook to upload is %s\n" % (notebook))
 sys.stderr.write("Info: Namespace is %s\n" % (namespace))
 if storage_path is not None:
