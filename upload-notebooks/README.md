@@ -10,8 +10,14 @@ Example:
 ```yaml
     - uses: TileDB-Inc/github-actions/upload-notebooks@main
       with:
-        notebooks_local: path/to/notebook-1.ipynb path/to/notebook-2.ipynb path/to/notebook-3.ipynb
-        notebooks_remote: tiledb://namespace/s3://cloud-path/notebook-1 tiledb://namespace/s3://cloud-path/notebook-2 tiledb://namespace/s3://cloud-path/notebook-3
+        notebooks_local: >-
+          path/to/notebook-1.ipynb
+          path/to/notebook-2.ipynb
+          path/to/notebook-3.ipynb
+        notebooks_remote: >-
+          tiledb://namespace/s3://cloud-path/notebook-1
+          tiledb://namespace/s3://cloud-path/notebook-2
+          tiledb://namespace/s3://cloud-path/notebook-3
         TILEDB_CLOUD_TOKEN: ${{ secrets.TILEDB_CLOUD_TOKEN }}
         TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME: <name-of-aws-credential-saved-on-tiledb-cloud>
 ```
