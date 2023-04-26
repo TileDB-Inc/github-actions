@@ -3,8 +3,10 @@
 # Upload notebook to TileDB Cloud
 #
 # Usage:
-#     python upload-notebook.py <path/to/notebook.ipynb>
-#     python upload-notebook.py --help
+#     python upload-notebooks.py --help
+#     python upload-notebooks.py \
+#       --notebooks_local <path/to/notebook.ipynb> \
+#       --notebooks_remote <tiledb://namespace/s3://cloud/notebook
 #
 # Variables read from the environment:
 #   - TILEDB_CLOUD_TOKEN: API token for TileDB Cloud account (required via env var or cli arg)

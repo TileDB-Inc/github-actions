@@ -1,22 +1,25 @@
 name: Upload notebooks to TileDB Cloud
 description: Upload notebooks to TileDB Cloud
 inputs:
-  notebooks:
+  notebooks_local:
     description: >-
       The path(s) to the notebook(s) to upload. Must have extension ".ipynb".
       Separate multiple paths with whitespace. The path(s) cannot include spaces
     required: true
+  notebooks_remote:
+    description: >-
+      The full URI(s) on TileDB Cloud (no file extension), eg
+      'tiledb://namespace/s3://path/notebook'. Separate multiple URIs with
+      whitespace
+    required: true
   TILEDB_CLOUD_TOKEN:
     description: 'API token for TileDB Cloud account (scope: `array:admin`)'
     required: true
-  TILEDB_CLOUD_NAMESPACE:
-    description: Namespace for TileDB Cloud
-    required: true
-  TILEDB_CLOUD_STORAGE_PATH:
-   description: Storage path on TileDB Cloud
-   required: false
   TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME:
-   description: Storage credentials to use on TileDB Cloud
+   description: >-
+     Storage credentials to use on TileDB Cloud. If not specified, the API token
+     must have scope `*` in order to query your user profile to obtain the name
+     of your default cloud credentials
    required: false
 runs:
   using: "composite"
@@ -30,13 +33,10 @@ runs:
     - name: Upload notebooks
       env:
         TILEDB_CLOUD_TOKEN: ${{ inputs.TILEDB_CLOUD_TOKEN }}
-        TILEDB_CLOUD_NAMESPACE: ${{ inputs.TILEDB_CLOUD_NAMESPACE }}
-        TILEDB_CLOUD_STORAGE_PATH:  ${{ inputs.TILEDB_CLOUD_STORAGE_PATH }}
-        TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME:  ${{ inputs.TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME }}
       run: |
-        for notebook in ${{ inputs.notebooks }}
-        do
-          echo "Uploading $notebook"
-          "$RUNNER_TEMP/pyenv/bin/python" "${{ github.action_path }}/upload-notebook.py" "$notebook"
-        done
+        "$RUNNER_TEMP/pyenv/bin/python" \
+          "${{ github.action_path }}/upload-notebooks.py" \
+          --notebooks-local ${{ inputs.notebooks_local }} \
+          --notebooks-remote ${{ inputs.notebooks_remote }} \
+          --tiledb-cloud-storage-credential-name ${{ inputs.TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME }}
       shell: bash

@@ -7,7 +7,7 @@ cp notebook-example.ipynb $NOTEBOOK_EXAMPLE
 python upload-notebooks.py \
   --notebooks-local $NOTEBOOK_EXAMPLE \
   --notebooks-remote tiledb://jdblischak/s3://tiledb-cloud-jdblischak/notebooks/${NOTEBOOK_EXAMPLE%.ipynb} \
-  --tiledb-cloud-storage-credential-name=personal-aws
+  --tiledb-cloud-storage-credential-name personal-aws
 rm $NOTEBOOK_EXAMPLE
 
 echo -e "\n===\nTest: Fail for missing notebook\n==="
