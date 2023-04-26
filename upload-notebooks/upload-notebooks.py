@@ -30,13 +30,13 @@ parser.add_argument(
     "--notebooks-local",
     required=True,
     nargs="+",
-    help="Notebook files to upload (extension .ipynb)",
+    help="Notebook file(s) to upload (extension .ipynb)",
 )
 parser.add_argument(
     "--notebooks-remote",
     required=True,
     nargs="+",
-    help="Full URIs on TileDB Cloud (no file extension), eg 'tiledb://namespace/s3://path/notebook'",
+    help="Full URI(s) on TileDB Cloud (no file extension), eg 'tiledb://namespace/s3://path/notebook'",
 )
 parser.add_argument(
     "--tiledb-cloud-token",
@@ -50,12 +50,18 @@ parser.add_argument(
     default=os.environ.get("TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME"),
     help="Storage credentials to use on TileDB Cloud (overrides env var TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME)",
 )
+parser.add_argument(
+    "--delete-remote-notebooks",
+    action="store_true",
+    help="(Testing purposes only) Delete test notebook(s) from TileDB Cloud after successful upload",
+)
 args = parser.parse_args()
 
 notebooks_local = args.notebooks_local
 notebooks_remote = args.notebooks_remote
 token = args.tiledb_cloud_token
 storage_credential_name = args.tiledb_cloud_storage_credential_name
+delete_remote_notebooks = args.delete_remote_notebooks
 
 # Verify input
 n_notebooks_local = len(notebooks_local)
@@ -124,3 +130,7 @@ for i in range(len(notebooks_local)):
         on_exists=OnExists.OVERWRITE if exists else OnExists.FAIL,
     )
     sys.stderr.write("Info: Uploaded to %s\n" % (uploaded))
+
+    if delete_remote_notebooks:
+        tiledb.cloud.deregister_array(uri)
+        sys.stderr.write("Info: Deregistered remote notebook %s\n" % (uri))
