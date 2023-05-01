@@ -36,12 +36,14 @@ pip install tiledb-cloud
 python upload-notebooks.py --help
 
 python upload-notebooks.py \
-  --notebooks-local path/to/notebook-1.ipynb \
+  --notebooks-local \
+    path/to/notebook-1.ipynb \
     path/to/notebook-2.ipynb \
     path/to/notebook-3.ipynb \
-  --notebooks-remote tiledb://namespace/s3://cloud-path/notebook-1 \
+  --notebooks-remote \
+    tiledb://namespace/s3://cloud-path/notebook-1 \
     tiledb://namespace/s3://cloud-path/notebook-2 \
     tiledb://namespace/s3://cloud-path/notebook-3 \
-  --tiledb-cloud-token=<token> \
+  --tiledb-cloud-token <token> \
   --tiledb-cloud-storage-credential-name <name-of-aws-credential-saved-on-tiledb-cloud>
 ```

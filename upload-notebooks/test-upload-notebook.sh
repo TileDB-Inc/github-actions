@@ -11,6 +11,14 @@ python upload-notebooks.py \
   --delete-remote-notebooks
 rm $NOTEBOOK_EXAMPLE
 
+echo -e "\n===\nTest: Fail for missing remote URI \n==="
+python upload-notebooks.py \
+  --notebooks-local \
+    notebook-1.ipynb \
+    notebook-2.ipynb \
+  --notebooks-remote \
+    tiledb://namespace/s3://notebook-1
+
 echo -e "\n===\nTest: Fail for missing notebook\n==="
 python upload-notebooks.py \
   --notebooks-local missing.ipynb \
