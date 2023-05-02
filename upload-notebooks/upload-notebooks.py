@@ -115,11 +115,10 @@ for i in range(len(notebooks_local)):
         sys.exit(1)
 
     with tiledb.scope_ctx(tiledb.cloud.Ctx()):
-        exists = tiledb.array_exists(uri)
-    if exists:
-        sys.stderr.write("Info: Updating existing notebook file\n")
-    else:
-        sys.stderr.write("Info: Uploading new notebook file\n")
+        if tiledb.array_exists(uri):
+            sys.stderr.write("Info: Updating existing notebook file\n")
+        else:
+            sys.stderr.write("Info: Uploading new notebook file\n")
 
     uploaded = tiledb.cloud.upload_notebook_from_file(
         ipynb_file_name=notebook,
@@ -127,7 +126,7 @@ for i in range(len(notebooks_local)):
         array_name=os.path.basename(s3path),
         storage_path=os.path.dirname(s3path),
         storage_credential_name=storage_credential_name,
-        on_exists=OnExists.OVERWRITE if exists else OnExists.FAIL,
+        on_exists=OnExists.OVERWRITE,
     )
     sys.stderr.write("Info: Uploaded to %s\n" % (uploaded))
 
