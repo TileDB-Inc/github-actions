@@ -53,7 +53,7 @@ parser.add_argument(
 parser.add_argument(
     "--delete-remote-notebooks",
     action="store_true",
-    help="(Testing purposes only) Delete test notebook(s) from TileDB Cloud after successful upload",
+    help="(Testing purposes only) Delete test notebook(s) from TileDB Cloud (and AWS) after successful upload",
 )
 args = parser.parse_args()
 
@@ -131,5 +131,6 @@ for i in range(len(notebooks_local)):
     sys.stderr.write("Info: Uploaded to %s\n" % (uploaded))
 
     if delete_remote_notebooks:
-        tiledb.cloud.deregister_array(uri)
-        sys.stderr.write("Info: Deregistered remote notebook %s\n" % (uri))
+        with tiledb.scope_ctx(tiledb.cloud.Ctx()):
+            tiledb.Array.delete_array(uri)
+        sys.stderr.write("Info: Deleted remote notebook %s\n" % (uri))
