@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Upload notebook to TileDB Cloud
 #
@@ -94,6 +94,7 @@ if token is None:
 
 # Login
 tiledb.cloud.login(token=token)
+tiledb.default_ctx(tiledb.cloud.Config())
 if storage_credential_name is not None:
     sys.stderr.write(
         "Info: Storage credential name is %s\n" % (storage_credential_name)
@@ -114,11 +115,16 @@ for i in range(len(notebooks_local)):
         )
         sys.exit(1)
 
-    with tiledb.scope_ctx(tiledb.cloud.Ctx()):
-        if tiledb.array_exists(uri):
-            sys.stderr.write("Info: Updating existing notebook file\n")
-        else:
-            sys.stderr.write("Info: Uploading new notebook file\n")
+    # This command will fail in the following situation: 1) array:admin scoped
+    # token, 2) tiledb-py 0.21.3+, 3) non-existent notebook
+    try:
+        exists = tiledb.array_exists(uri)
+    except:
+        exists = False
+    if exists:
+        sys.stderr.write("Info: Updating existing notebook file\n")
+    else:
+        sys.stderr.write("Info: Uploading new notebook file\n")
 
     uploaded = tiledb.cloud.upload_notebook_from_file(
         ipynb_file_name=notebook,
@@ -131,6 +137,5 @@ for i in range(len(notebooks_local)):
     sys.stderr.write("Info: Uploaded to %s\n" % (uploaded))
 
     if delete_remote_notebooks:
-        with tiledb.scope_ctx(tiledb.cloud.Ctx()):
-            tiledb.Array.delete_array(uri)
+        tiledb.Array.delete_array(uri)
         sys.stderr.write("Info: Deleted remote notebook %s\n" % (uri))

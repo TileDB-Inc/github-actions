@@ -1,0 +1,45 @@
+name: Test action upload-notebooks
+on:
+  push:
+    paths:
+      - '.github/workflows/upload-notebooks.yml'
+      - 'upload-notebooks/**'
+  pull_request:
+    paths:
+      - '.github/workflows/upload-notebooks.yml'
+      - 'upload-notebooks/**'
+  workflow_dispatch:
+jobs:
+  upload-notebooks-script:
+    runs-on: ${{ matrix.os }}
+    name: Test upload-notebooks.py (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Install tiledb-cloud
+      run: pip3 install tiledb "tiledb-cloud>=0.10.1"
+    - name: Test script
+      env:
+        TILEDB_CLOUD_TOKEN: ${{ secrets.TILEDB_CLOUD_TOKEN }}
+      run: cd upload-notebooks && bash test-upload-notebooks.sh
+  upload-notebooks-action:
+    runs-on: ${{ matrix.os }}
+    name: Test upload-notebooks action (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Upload notebooks
+      uses: ./upload-notebooks
+      with:
+        notebooks_local: ./upload-notebooks/notebook-example.ipynb
+        notebooks_remote: tiledb://TileDBCITesting/s3://tiledb-test/tiledb-cloud-upload-ci-testing/notebook-example
+        TILEDB_CLOUD_TOKEN: ${{ secrets.TILEDB_CLOUD_TOKEN }}
+        TILEDB_CLOUD_STORAGE_CREDENTIAL_NAME: IsaiahCloudKey

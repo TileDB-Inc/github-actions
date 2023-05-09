@@ -26,15 +26,15 @@ runs:
   steps:
     - name: Install tiledb-cloud package in virtual env
       run: |
-        python -m venv "$RUNNER_TEMP/pyenv"
-        "$RUNNER_TEMP/pyenv/bin/pip" install "tiledb-cloud>=0.10.1"
+        python3 -m venv "$RUNNER_TEMP/pyenv"
+        "$RUNNER_TEMP/pyenv/bin/pip" install tiledb "tiledb-cloud>=0.10.1"
         "$RUNNER_TEMP/pyenv/bin/pip" list
       shell: bash
     - name: Upload notebooks
       env:
         TILEDB_CLOUD_TOKEN: ${{ inputs.TILEDB_CLOUD_TOKEN }}
       run: |
-        "$RUNNER_TEMP/pyenv/bin/python" \
+        "$RUNNER_TEMP/pyenv/bin/python3" \
           "${{ github.action_path }}/upload-notebooks.py" \
           --notebooks-local ${{ inputs.notebooks_local }} \
           --notebooks-remote ${{ inputs.notebooks_remote }} \
