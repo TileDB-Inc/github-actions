@@ -1,0 +1,31 @@
+name: Open Issue
+description: Open a new Issue (or comment on an existing one)
+inputs:
+  name:
+    description: >-
+      Name to identify the job. Will be used in the Issue title and message body.
+      For the best formatting, use capital case (eg "Nightly build")
+    required: true
+  label:
+    description: >-
+      Comma-separated list of labels to assign to the Issue (eg "nightly,bug").
+      The label must already exist for the repository
+    required: true
+  assignee:
+    description: >-
+      Comma-separated list of GitHub usernames to assign to the Issue (eg
+      "user1,user2"). The GitHub accounts must be collaborators on the
+      repository
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Open Issue
+      env:
+        GH_TOKEN: ${{ github.token }}
+        TZ: "America/New_York"
+        OPEN_ISSUE_ACTION_NAME:  ${{ inputs.name }}
+        OPEN_ISSUE_ACTION_LABEL:  ${{ inputs.label }}
+        OPEN_ISSUE_ACTION_ASSIGNEE:  ${{ inputs.assignee }}
+      run: bash "${{ github.action_path }}/open-issue.sh"
+      shell: bash
