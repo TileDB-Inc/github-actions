@@ -26,7 +26,7 @@ jobs:
         GH_TOKEN: ${{ github.token }}
         TZ: "America/New_York"
         OPEN_ISSUE_ACTION_NAME: Nightly build
-        OPEN_ISSUE_ACTION_LABEL: wontfix,bug
+        OPEN_ISSUE_ACTION_LABEL: wontfix,help wanted
         OPEN_ISSUE_ACTION_ASSIGNEE: jdblischak
       run: cd open-issue && bash open-issue.sh
       shell: bash
@@ -47,7 +47,7 @@ jobs:
       uses: ./open-issue
       with:
         name: Nightly build
-        label: wontfix,bug
+        label: wontfix,help wanted
         assignee: jdblischak
   close-issue:
     permissions:
