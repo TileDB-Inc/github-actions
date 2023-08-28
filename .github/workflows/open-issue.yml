@@ -1,6 +1,9 @@
 name: Test action open-issue
 on:
   push:
+    # Only create test Issue on branches, not post-merge
+    branches-ignore:
+      - main
     paths:
       - '.github/workflows/open-issue.yml'
       - 'open-issue/**'
