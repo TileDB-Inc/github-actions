@@ -23,6 +23,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
     - name: Test script
+      id: open-issue
       env:
         GH_TOKEN: ${{ github.token }}
         TZ: "America/New_York"
@@ -30,6 +31,9 @@ jobs:
         OPEN_ISSUE_ACTION_LABEL: wontfix
         OPEN_ISSUE_ACTION_ASSIGNEE: jdblischak
       run: cd open-issue && bash open-issue.sh
+      shell: bash
+    - name: Report Issue number
+      run: echo ${{ steps.open-issue.outputs.issue-number }}
       shell: bash
   # Test the action
   open-issue-action:
@@ -51,8 +55,6 @@ jobs:
         name: Nightly build
         label: wontfix
         assignee: jdblischak
-    - name: Report Issue number
-      run: echo ${{ steps.open-issue.outputs.issue-number }}
   # cleanup
   close-issue:
     permissions:
