@@ -32,9 +32,6 @@ jobs:
         OPEN_ISSUE_ACTION_ASSIGNEE: jdblischak
       run: cd open-issue && bash open-issue.sh
       shell: bash
-    - name: Report Issue number
-      run: echo ${{ steps.open-issue.outputs.issue-number }}
-      shell: bash
   # Test the action
   open-issue-action:
     permissions:
