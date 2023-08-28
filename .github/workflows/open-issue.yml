@@ -23,8 +23,8 @@ jobs:
         GH_TOKEN: ${{ github.token }}
         TZ: "America/New_York"
         OPEN_ISSUE_ACTION_NAME: Nightly build
-        OPEN_ISSUE_ACTION_LABEL:  wontfix
-        OPEN_ISSUE_ACTION_ASSIGNEE:  jdblischak
+        OPEN_ISSUE_ACTION_LABEL: wontfix
+        OPEN_ISSUE_ACTION_ASSIGNEE: jdblischak
       run: cd open-issue && bash open-issue.sh
       shell: bash
   open-issue-action:
@@ -43,7 +43,7 @@ jobs:
       uses: ./open-issue
       with:
         name: Nightly build
-        label: bug
+        label: wontfix
         assignee: jdblischak
   close-issue:
     permissions:
@@ -56,21 +56,10 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
-    - name: Close Issue from open-issue-script
+    - name: Close test Issue
       run: |
         existing=$(gh issue list \
           --label wontfix \
-          --limit 1 \
-          --jq '.[].number' \
-          --json "number" \
-          --state "open")
-
-        gh issue close "$existing"
-      shell: bash
-    - name: Close Issue from open-issue-action
-      run: |
-        existing=$(gh issue list \
-          --label bug \
           --limit 1 \
           --jq '.[].number' \
           --json "number" \
