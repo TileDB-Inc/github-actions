@@ -4,10 +4,6 @@ on:
     paths:
       - '.github/workflows/open-issue.yml'
       - 'open-issue/**'
-  pull_request:
-    paths:
-      - '.github/workflows/open-issue.yml'
-      - 'open-issue/**'
   workflow_dispatch:
 jobs:
   open-issue-script:
