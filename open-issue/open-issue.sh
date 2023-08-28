@@ -13,6 +13,14 @@ fi
 theDate="$(date '+%A (%Y-%m-%d)')"
 theMessage="$OPEN_ISSUE_ACTION_NAME failed on $theDate in run [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
 
+# --assignee flag is optional
+if [[ -n "$OPEN_ISSUE_ACTION_ASSIGNEE" ]]
+then
+  flagAssignee="--assignee $OPEN_ISSUE_ACTION_ASSIGNEE"
+else
+  flagAssignee=""
+fi
+
 existing=$(gh issue list \
   --label "$OPEN_ISSUE_ACTION_LABEL" \
   --limit 1 \
@@ -24,7 +32,7 @@ if [[ -z "$existing" ]]
 then
   # open new issue
   gh issue create \
-    --assignee $OPEN_ISSUE_ACTION_ASSIGNEE \
+    $flagAssignee \
     --body "$theMessage" \
     --label "$OPEN_ISSUE_ACTION_LABEL" \
     --title "$OPEN_ISSUE_ACTION_NAME failed on $theDate"
