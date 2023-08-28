@@ -19,7 +19,7 @@ Example:
       - name: Open Issue
         uses: ./open-issue
         with:
-          name: Nightly build
+          name: nightly build
           label: bug
           assignee: username
 ```

@@ -3,8 +3,8 @@ description: Open a new Issue (or comment on an existing one)
 inputs:
   name:
     description: >-
-      Name to identify the job. Will be used in the Issue title and message body.
-      For the best formatting, use capital case (eg "Nightly build")
+      Name to identify the job. Will be used in the Issue title and message
+      body. Can include spaces. The title begins "The <name> job failed on..."
     required: true
   label:
     description: >-

@@ -11,7 +11,7 @@ then
 fi
 
 theDate="$(date '+%A (%Y-%m-%d)')"
-theMessage="$OPEN_ISSUE_ACTION_NAME failed on $theDate in run [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+theMessage="The $OPEN_ISSUE_ACTION_NAME job failed on $theDate in run [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
 
 # --assignee flag is optional
 if [[ -n "$OPEN_ISSUE_ACTION_ASSIGNEE" ]]
@@ -35,7 +35,7 @@ then
     $flagAssignee \
     --body "$theMessage" \
     --label "$OPEN_ISSUE_ACTION_LABEL" \
-    --title "$OPEN_ISSUE_ACTION_NAME failed on $theDate"
+    --title "The $OPEN_ISSUE_ACTION_NAME job failed on $theDate"
 else
   # comment on existing issue
   gh issue comment "$existing" \

@@ -27,7 +27,7 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         TZ: "America/New_York"
-        OPEN_ISSUE_ACTION_NAME: Nightly build
+        OPEN_ISSUE_ACTION_NAME: nightly build
         OPEN_ISSUE_ACTION_LABEL: wontfix
         OPEN_ISSUE_ACTION_ASSIGNEE: jdblischak
       run: cd open-issue && bash open-issue.sh
@@ -49,7 +49,7 @@ jobs:
     - name: Test action
       uses: ./open-issue
       with:
-        name: Nightly build
+        name: nightly build
         label: wontfix
         assignee: jdblischak
   # cleanup
