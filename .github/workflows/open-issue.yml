@@ -9,6 +9,7 @@ on:
       - 'open-issue/**'
   workflow_dispatch:
 jobs:
+  # Test the script directly
   open-issue-script:
     permissions:
       issues: write
@@ -26,10 +27,11 @@ jobs:
         GH_TOKEN: ${{ github.token }}
         TZ: "America/New_York"
         OPEN_ISSUE_ACTION_NAME: Nightly build
-        OPEN_ISSUE_ACTION_LABEL: wontfix,help wanted
+        OPEN_ISSUE_ACTION_LABEL: wontfix
         OPEN_ISSUE_ACTION_ASSIGNEE: jdblischak
       run: cd open-issue && bash open-issue.sh
       shell: bash
+  # Test the action
   open-issue-action:
     permissions:
       issues: write
@@ -47,8 +49,9 @@ jobs:
       uses: ./open-issue
       with:
         name: Nightly build
-        label: wontfix,help wanted
+        label: wontfix
         assignee: jdblischak
+  # cleanup
   close-issue:
     permissions:
       issues: write

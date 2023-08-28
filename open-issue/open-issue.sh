@@ -42,4 +42,13 @@ else
     --body "$theMessage"
 fi
 
+# Save the Issue number as output
+issueNumber=$(gh issue list \
+  --label "$OPEN_ISSUE_ACTION_LABEL" \
+  --limit 1 \
+  --jq '.[].number' \
+  --json "number" \
+  --state "open")
+echo "issue-number=$IssueNumber" >> $GITHUB_OUTPUT
+
 echo "Success!"

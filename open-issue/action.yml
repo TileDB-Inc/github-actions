@@ -17,10 +17,15 @@ inputs:
       "user1,user2"). The GitHub accounts must be collaborators on the
       repository
     required: false
+outputs:
+  issue-number:
+    description: "Random number"
+    value: ${{ steps.open-issue.outputs.issue-number }}
 runs:
   using: "composite"
   steps:
     - name: Open Issue
+      id: open-issue
       env:
         GH_TOKEN: ${{ github.token }}
         TZ: "America/New_York"
