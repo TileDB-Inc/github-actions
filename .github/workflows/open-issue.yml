@@ -51,6 +51,8 @@ jobs:
         name: Nightly build
         label: wontfix
         assignee: jdblischak
+    - name: Report Issue number
+      run: echo ${{ steps.open-issue.outputs.issue-number }}
   # cleanup
   close-issue:
     permissions:
