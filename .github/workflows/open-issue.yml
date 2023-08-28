@@ -30,6 +30,7 @@ jobs:
   open-issue-action:
     permissions:
       issues: write
+    needs: [open-issue-script]
     runs-on: ${{ matrix.os }}
     name: Test open-issue action (${{ matrix.os }})
     strategy:
