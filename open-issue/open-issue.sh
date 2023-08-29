@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 # Open new Issue (or comment on existing)
 
@@ -12,6 +12,7 @@ fi
 
 theDate="$(date '+%A (%Y-%m-%d)')"
 theMessage="The $OPEN_ISSUE_ACTION_NAME job failed on $theDate in run [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+echo "$theMessage"
 
 # --assignee flag is optional
 if [[ -n "$OPEN_ISSUE_ACTION_ASSIGNEE" ]]
@@ -30,14 +31,14 @@ existing=$(gh issue list \
 
 if [[ -z "$existing" ]]
 then
-  # open new issue
+  echo "Opening new issue"
   gh issue create \
     $flagAssignee \
     --body "$theMessage" \
     --label "$OPEN_ISSUE_ACTION_LABEL" \
     --title "The $OPEN_ISSUE_ACTION_NAME job failed on $theDate"
 else
-  # comment on existing issue
+  echo "Commenting on existing issue"
   gh issue comment "$existing" \
     --body "$theMessage"
 fi
