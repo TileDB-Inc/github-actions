@@ -1,0 +1,77 @@
+name: Test action open-issue
+on:
+  push:
+    # Only create test Issue on branches, not post-merge
+    branches-ignore:
+      - main
+    paths:
+      - '.github/workflows/open-issue.yml'
+      - 'open-issue/**'
+  workflow_dispatch:
+jobs:
+  # Test the script directly
+  open-issue-script:
+    permissions:
+      issues: write
+    runs-on: ${{ matrix.os }}
+    name: Test open-issue.sh (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Test script
+      id: open-issue
+      env:
+        GH_TOKEN: ${{ github.token }}
+        TZ: "America/New_York"
+        OPEN_ISSUE_ACTION_NAME: nightly build
+        OPEN_ISSUE_ACTION_LABEL: wontfix
+        OPEN_ISSUE_ACTION_ASSIGNEE: jdblischak
+      run: cd open-issue && bash open-issue.sh
+      shell: bash
+  # Test the action
+  open-issue-action:
+    permissions:
+      issues: write
+    needs: [open-issue-script]
+    runs-on: ${{ matrix.os }}
+    name: Test open-issue action (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Test action
+      uses: ./open-issue
+      with:
+        name: nightly build
+        label: wontfix
+        assignee: jdblischak
+  # cleanup
+  close-issue:
+    permissions:
+      issues: write
+    needs: [open-issue-script, open-issue-action]
+    runs-on: ubuntu-latest
+    if: always()
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+    - name: Close test Issue
+      run: |
+        existing=$(gh issue list \
+          --label wontfix \
+          --limit 1 \
+          --jq '.[].number' \
+          --json "number" \
+          --state "open")
+
+        gh issue close "$existing"
+      shell: bash
