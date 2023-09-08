@@ -34,11 +34,13 @@ Example:
     steps:
       - uses: actions/checkout@v3
       - name: Open Issue
-        uses: ./open-issue
+        uses: TileDB-Inc/github-actions/open-issue@main
         with:
           name: nightly build
           label: bug,nightly-failure
           assignee: username
+        env:
+          TZ: "America/New_York"
 ```
 
 Notes on the example:
@@ -52,3 +54,5 @@ Notes on the example:
 * If there is an existing open Issue with the labels `bug` and
   `nightly-failure`, the action will comment on this Issue instead of opening a
   new one
+* The date included in the title and body is calculated by the GNU coreutils
+  tool `date`. To use a specific timezone, define the environment variable `TZ`
